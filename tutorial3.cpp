@@ -74,6 +74,8 @@ public :
         // associe le contenu du buffer a la variable 'position' du shader
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0); //0 à la place de m_program->attribute("position") car a priori le programme n'a qu'un seul attribut à ce moment là
 															   // c'est hard-coder, et sale, mais tant pis
+       
+		glVertexAttribPointer(1,3, GL_FLOAT, GL_TRUE, 3*sizeof(float), 0);//pour le calcul de normales
         // active l'utilisation du buffer 
         glEnableVertexAttribArray(0);
         
@@ -98,7 +100,8 @@ public :
 		
 	void bind()const{
 		// selectionner un ensemble de buffers et d'attributs de sommets
-        glBindVertexArray(m_vao->name);
+		assert(m_vao != nullptr);
+		glBindVertexArray(m_vao->name);
    }
 };
 class PimpMyMesh{
@@ -120,18 +123,29 @@ public :
 	
 	void draw(gk::Transform VP,  gk::GLProgram & m_program){
 		VP = VP * matModele;
-		bool boolet = true;
+		
+		bool boolet = false;
         // dessiner quelquechose
         glUseProgram(m_program.name);
+        
+        //ICI des uniforms !
         m_program.uniform("mvpMatrix")= VP.matrix();      // transformation model view projection
         m_program.uniform("diffuse_color")=  color;    // couleur des fragments
-       /* for(int i = 0; i< 8; i++){
-			gk::Point point = VP * m_mesh->getBbox()[i];
-			if(0 < point.x && point.x< 1 && 0 < point.y && point.y< 1 ){
+        
+        
+        //LA des unicorns !
+        
+        //ben non, c'est un programme de synthese d'images, pas un zoo...
+        
+		//idiot...
+		
+        for(int i = 0; i< 8; i++){
+			gk::Point point = VP(m_mesh->getBbox()[i]);
+			if(-1 < point.x && point.x< 1 && -1 < point.y && point.y< 1 ){
 				boolet = true;
 				break;
 			}
-		}*/
+		}
 		if(boolet){
 			m_mesh->bind();
 			// dessiner un maillage indexe
@@ -156,6 +170,8 @@ class TP : public gk::App
 	std::vector<PimpMyMesh> m_mesh_instances;
 	std::vector<MyMesh> m_array_meshes;
     gk::Point m_camera_position;
+    gk::Point light_position;
+    gk::VecColor light_color;
     gk::Vector m_view_direction;
     gk::GLCounter *m_time;
     float m_speed_camera;
@@ -163,6 +179,7 @@ class TP : public gk::App
     float m_dx, m_dy;
     int m_mousex, m_mousey;
 	bool m_mouse_pressed;
+	gk::Transform m_projection;
     
 public:
     // creation du contexte openGL et d'une fenetre
@@ -170,8 +187,11 @@ public:
         :
         gk::App(),
         m_camera_position(gk::Point(80.0, 20.0, 50.0)),
+        light_position(30.0, 50.0, 30.0),
+        light_color(1, 1, 1),
         m_view_direction(gk::Vector(0.0, -0.5, -1.0)),
-        m_speed_camera(0.2),
+        m_speed_camera(0.5),
+       
         m_mouse_sensitivity(0.005),
         m_dx(3.0/2.0),
         m_dy(0.0),
@@ -198,11 +218,12 @@ public:
 		// compilation simplifiee d'un shader program
         gk::programPath("shaders");
         m_program= gk::createProgram("dFnormal.glsl");
+        m_projection = gk::Perspective(45.0, (float)windowWidth()/ windowHeight(), 0.1, 1000.0);
         if(m_program == gk::GLProgram::null())
             return -1;
         int nbBigguy = 59;
-        m_array_meshes.resize(nbBigguy+1);
-        m_mesh_instances.resize(nbBigguy+1);
+        m_array_meshes.resize(nbBigguy); //atention au +1 pour le sol si on le veut
+        m_mesh_instances.resize(nbBigguy);
         for(int i = 0; i < nbBigguy; i++){
 			std::ostringstream oss117;
 			oss117<<i;
@@ -215,7 +236,7 @@ public:
         // mesure du temps de dessin
         m_time= gk::createTimer();
         
-        // ok, tout c'est bien passe
+        // ok, tout s'est bien passe
         return 0;
     }
     
@@ -227,6 +248,8 @@ public:
     // a redefinir pour utiliser les widgets.
     void processWindowResize( SDL_WindowEvent& event )
     {
+		m_projection = gk::Perspective(45.0, (float)windowWidth()/ windowHeight(), 0.1, 1000.0);
+		//glViewport(0,0, windowWidth(), windowHeight());
         m_widgets.reshape(event.data1, event.data2);
     }
     
@@ -317,10 +340,17 @@ public:
         
         // parametrer le shader
      
-		
-     
         gk::Transform VP; //pour voir le bigguy dans ce cas là
-		VP = gk::Perspective(45.0, 4.0/3, 0.1, 1000.0) * gk::LookAt(m_camera_position, m_camera_position + m_view_direction, gk::Vector(0.0, 1.0, 0.0));
+        
+		VP =  m_projection * gk::LookAt(m_camera_position, m_camera_position + m_view_direction, gk::Vector(0.0, 1.0, 0.0));
+       
+        //Robo Uniform Attack
+        static float time = 0.0;
+        time += (float)m_time->cpu64() * 0.0000001; //va trop vite sinon soluce temp
+		//light_position = (0.5* gk::Vector(std::cos(time), 0.0, std::sin(time))) * gk::Vector(100.0, -10.0, 100.0);
+        m_program->uniform("light_color")= light_color; // couleur de la lumière 
+        m_program->uniform("light_position")= light_position; // position de la lumière
+        m_program->uniform("camera_position")= m_camera_position;
         
         for(int m = 0; m < m_mesh_instances.size(); m++){
 				m_mesh_instances[m].draw(VP, *m_program);
