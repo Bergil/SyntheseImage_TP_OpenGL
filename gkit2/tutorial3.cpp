@@ -257,8 +257,6 @@ public:
 		glGenFramebuffers(1, &framebuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
 		glFramebufferTexture(GL_FRAMEBUFFER , GL_DEPTH_ATTACHMENT , m_depth_texture , 0);
-		
-		glDrawBuffer(GL_NONE);
 		assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 		glBindFramebuffer(GL_FRAMEBUFFER,0); //unbind
 		
@@ -446,6 +444,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, m_texture->name);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, m_depth_texture);
+        glGenerateMipmap(GL_TEXTURE_2D);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glProgramUniform1i(m_program->name, glGetUniformLocation(m_program->name, "shadow"), 1);
         glProgramUniform1i(m_program->name, glGetUniformLocation(m_program->name, "color"), 0);
@@ -457,11 +456,7 @@ public:
 		glBindTexture(GL_TEXTURE_2D,0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,0);
-		/* code animation Yoann trop bien ++
-		static int m = 0;
-		m = (m + 1) % 59;
-		m_mesh_instances[m].draw(VP, *m_program);
-        */
+		
         // mesurer le temps d'execution
         m_time->stop();
         

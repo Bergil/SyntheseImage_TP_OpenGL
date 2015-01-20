@@ -59,17 +59,25 @@
 		if(isTextured != 0.0){
 			texture_color.rgb = texture(color, vertex_text_coord.xy).rgb;
 			proj_lumiere = (vpMatrixLight * vec4(vertex_position, 1.0));
-			shadowcoordtemp = (proj_lumiere+1.0)/2.0; 
-			texture_shadow = textureProj(shadow,shadowcoordtemp.xyw); 
+			shadowcoordtemp.xyz = (proj_lumiere.xyz + 1.0)/2.0; 
+			shadowcoordtemp.w = proj_lumiere.w;
+			vec4 lol = (proj_lumiere / proj_lumiere.w + 1.0)/2.0; 
+			texture_shadow = texture(shadow, lol.xy); 
 			
 			vec3 n = normalize(vertex_normal);
-			if(texture_shadow.z < shadowcoordtemp.z/proj_lumiere.w && 
-			  (shadowcoordtemp.x/proj_lumiere.w<0 || shadowcoordtemp.y/proj_lumiere.w<0 || shadowcoordtemp.x/proj_lumiere.w>1|| shadowcoordtemp.y/proj_lumiere.w>1)){
-				fragment_color.rgb = vec3(0.0); //dans l'ombre
-			}else{
-				fragment_color.rgb = phongLight(lightshadow_color.rgb, texture_color.rgb, lightshadow_pos.xyz, vertex_position.xyz, n);
+			if(lol.x < 0 || lol.y < 0 || 
+			   lol.x > 1 || lol.y > 1)
+			{
+				  fragment_color.rgb = vec3(0.0); // Non influencé par la lumière
+			} else {				
+				if(texture_shadow.r + 0.000001 < lol.z)
+				{
+					fragment_color.rgb = vec3(0.0); //dans l'ombre
+					//fragment_color.rgb = vec3(1.0, 0.0, 0.0); //dans l'ombre
+				}else{
+					fragment_color.rgb = phongLight(lightshadow_color.rgb, texture_color.rgb, lightshadow_pos.xyz, vertex_position.xyz, n);
+				}
 			}
-			
 			fragment_color.rgb += ambiante * texture_color.rgb;
 			for(int i = 0; i < nb_lights; i++){
 				fragment_color.rgb += phongLight(light_color[i].rgb, texture_color.rgb,light_position[i].xyz,  vertex_position.xyz, n)*0.5;
