@@ -20,9 +20,9 @@ ifndef AR
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = obj/debug/mesh_viewer
+  OBJDIR     = obj/debug/mainShadowMap
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/mesh_viewer
+  TARGET     = $(TARGETDIR)/mainShadowMap
   DEFINES   += -DGK_OPENGL4 -DVERBOSE -DDEBUG
   INCLUDES  += -I. -IgKit
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -42,9 +42,9 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = obj/release/mesh_viewer
+  OBJDIR     = obj/release/mainShadowMap
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/mesh_viewer
+  TARGET     = $(TARGETDIR)/mainShadowMap
   DEFINES   += -DGK_OPENGL4 -DVERBOSE
   INCLUDES  += -I. -IgKit
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -93,7 +93,7 @@ OBJECTS := \
 	$(OBJDIR)/nvGLCorePainter.o \
 	$(OBJDIR)/nvSDLContext.o \
 	$(OBJDIR)/nvSDLFont.o \
-	$(OBJDIR)/mesh_viewer.o \
+	$(OBJDIR)/mainShadowMap.o \
 
 RESOURCES := \
 
@@ -111,7 +111,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking mesh_viewer
+	@echo Linking mainShadowMap
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -132,7 +132,7 @@ else
 endif
 
 clean:
-	@echo Cleaning mesh_viewer
+	@echo Cleaning mainShadowMap
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -241,7 +241,7 @@ $(OBJDIR)/nvSDLContext.o: gKit/Widgets/nvSDLContext.cpp
 $(OBJDIR)/nvSDLFont.o: gKit/Widgets/nvSDLFont.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/mesh_viewer.o: mesh_viewer.cpp
+$(OBJDIR)/mainShadowMap.o: mainShadowMap.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 

@@ -43,7 +43,7 @@
 	vec4 texture_shadow;
     vec4 proj_lumiere;
     vec3 phongLight (vec3 colorlight, vec3 colorobjet, vec3 positionlight, vec3 positionobjet, vec3 normale){
-		vec3 Lemise = 20.0 * colorlight/(length(positionlight- positionobjet));
+		vec3 Lemise = 50.0 * colorlight/(length(positionlight- positionobjet));
 		vec3 h = (normalize(camera_position - positionobjet) + normalize(positionlight- positionobjet)) /2;
 		float NdotL = max(0.0, dot(normale, normalize(positionlight - positionobjet))); 
 		float RdotL = max(0.0, dot(reflect(normalize(positionobjet - camera_position),normale), normalize(positionlight - positionobjet)));	

@@ -26,7 +26,7 @@ solution "TP"
 
 		configuration "linux"
 			buildoptions { "-mtune=native" }
-			buildoptions { "-W -Wall -Wno-unused-parameter", "-pipe" }
+			buildoptions { "-W -Wall -std=c++11 -Wno-unused-parameter", "-pipe" }
 
 -- si sdl2, sdl2_image, sdl2_ttf sont installes, pas la peine
 --~ 			local glew_include= "local/linux/include"
@@ -88,13 +88,7 @@ solution "TP"
 
 
 local project_files = {
-	"tutorial1",
-	"tutorial2",
-	"tutorial3",
-	"tutorial4",
-	"tutorial5",
-	"tutorial6",
-	"tuto_ray1",
+	"mainShadowMap",
 	"mini_gkit2",
 	"image_viewer",
 	"mesh_viewer",
@@ -104,9 +98,7 @@ local project_files = {
 	"batch_perf",
 	"tessellation_tuto",
 	"tessellation_sphere",
-	"compute_tutorial1",
-	"compute_tutorial2",
-	"compute_tutorial3"
+	"compute_mainShadowMap"
 }
 
 for i, name in ipairs(project_files) do

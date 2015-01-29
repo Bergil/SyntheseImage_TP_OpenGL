@@ -6,39 +6,15 @@ ifndef config
 endif
 export config
 
-PROJECTS := tutorial1 tutorial2 tutorial3 tutorial4 tutorial5 tutorial6 tuto_ray1 mini_gkit2 image_viewer mesh_viewer shader_kit filter_tutorial1 filter_compute_tutorial1 batch_perf tessellation_tuto tessellation_sphere compute_tutorial1 compute_tutorial2 compute_tutorial3 mini_gl3core
+PROJECTS := mainShadowMap mini_gkit2 image_viewer mesh_viewer shader_kit filter_tutorial1 filter_compute_tutorial1 batch_perf tessellation_tuto tessellation_sphere compute_mainShadowMap mini_gl3core
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-tutorial1: 
-	@echo "==== Building tutorial1 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial1.make
-
-tutorial2: 
-	@echo "==== Building tutorial2 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial2.make
-
-tutorial3: 
-	@echo "==== Building tutorial3 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial3.make
-
-tutorial4: 
-	@echo "==== Building tutorial4 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial4.make
-
-tutorial5: 
-	@echo "==== Building tutorial5 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial5.make
-
-tutorial6: 
-	@echo "==== Building tutorial6 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tutorial6.make
-
-tuto_ray1: 
-	@echo "==== Building tuto_ray1 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f tuto_ray1.make
+mainShadowMap: 
+	@echo "==== Building mainShadowMap ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f mainShadowMap.make
 
 mini_gkit2: 
 	@echo "==== Building mini_gkit2 ($(config)) ===="
@@ -76,30 +52,16 @@ tessellation_sphere:
 	@echo "==== Building tessellation_sphere ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f tessellation_sphere.make
 
-compute_tutorial1: 
-	@echo "==== Building compute_tutorial1 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f compute_tutorial1.make
-
-compute_tutorial2: 
-	@echo "==== Building compute_tutorial2 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f compute_tutorial2.make
-
-compute_tutorial3: 
-	@echo "==== Building compute_tutorial3 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f compute_tutorial3.make
+compute_mainShadowMap: 
+	@echo "==== Building compute_mainShadowMap ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f compute_mainShadowMap.make
 
 mini_gl3core: 
 	@echo "==== Building mini_gl3core ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f mini_gl3core.make
 
 clean:
-	@${MAKE} --no-print-directory -C . -f tutorial1.make clean
-	@${MAKE} --no-print-directory -C . -f tutorial2.make clean
-	@${MAKE} --no-print-directory -C . -f tutorial3.make clean
-	@${MAKE} --no-print-directory -C . -f tutorial4.make clean
-	@${MAKE} --no-print-directory -C . -f tutorial5.make clean
-	@${MAKE} --no-print-directory -C . -f tutorial6.make clean
-	@${MAKE} --no-print-directory -C . -f tuto_ray1.make clean
+	@${MAKE} --no-print-directory -C . -f mainShadowMap.make clean
 	@${MAKE} --no-print-directory -C . -f mini_gkit2.make clean
 	@${MAKE} --no-print-directory -C . -f image_viewer.make clean
 	@${MAKE} --no-print-directory -C . -f mesh_viewer.make clean
@@ -109,9 +71,7 @@ clean:
 	@${MAKE} --no-print-directory -C . -f batch_perf.make clean
 	@${MAKE} --no-print-directory -C . -f tessellation_tuto.make clean
 	@${MAKE} --no-print-directory -C . -f tessellation_sphere.make clean
-	@${MAKE} --no-print-directory -C . -f compute_tutorial1.make clean
-	@${MAKE} --no-print-directory -C . -f compute_tutorial2.make clean
-	@${MAKE} --no-print-directory -C . -f compute_tutorial3.make clean
+	@${MAKE} --no-print-directory -C . -f compute_mainShadowMap.make clean
 	@${MAKE} --no-print-directory -C . -f mini_gl3core.make clean
 
 help:
@@ -124,13 +84,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   tutorial1"
-	@echo "   tutorial2"
-	@echo "   tutorial3"
-	@echo "   tutorial4"
-	@echo "   tutorial5"
-	@echo "   tutorial6"
-	@echo "   tuto_ray1"
+	@echo "   mainShadowMap"
 	@echo "   mini_gkit2"
 	@echo "   image_viewer"
 	@echo "   mesh_viewer"
@@ -140,9 +94,7 @@ help:
 	@echo "   batch_perf"
 	@echo "   tessellation_tuto"
 	@echo "   tessellation_sphere"
-	@echo "   compute_tutorial1"
-	@echo "   compute_tutorial2"
-	@echo "   compute_tutorial3"
+	@echo "   compute_mainShadowMap"
 	@echo "   mini_gl3core"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"

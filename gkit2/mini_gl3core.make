@@ -26,7 +26,7 @@ ifeq ($(config),debug)
   DEFINES   += -DGK_OPENGL4 -DVERBOSE -DDEBUG
   INCLUDES  += -I. -IgKit
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -mtune=native -W -Wall -Wno-unused-parameter -pipe
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -mtune=native -W -Wall -std=c++11 -Wno-unused-parameter -pipe
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += 
   LIBS      += -lGLEW -lSDL2 -lSDL2_image -lSDL2_ttf -lGL
@@ -48,7 +48,7 @@ ifeq ($(config),release)
   DEFINES   += -DGK_OPENGL4 -DVERBOSE
   INCLUDES  += -I. -IgKit
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O3 -mtune=native -W -Wall -Wno-unused-parameter -pipe -mtune=native -O3
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -O3 -mtune=native -W -Wall -std=c++11 -Wno-unused-parameter -pipe -mtune=native -O3
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -s
   LIBS      += -lGLEW -lSDL2 -lSDL2_image -lSDL2_ttf -lGL
